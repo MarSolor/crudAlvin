@@ -1,7 +1,7 @@
 import { Button, Table } from 'antd';
 import React from 'react';
 import 'antd/dist/antd.css';
-import { message, Popconfirm, Form, Input } from 'antd';
+import {  Form, Input } from 'antd';
 import {useModalState} from './ModalCrud'
 import Modal from 'antd/lib/modal'
 import { useState } from 'react';
@@ -11,9 +11,10 @@ export const TableCrud  =({}) => {
     //!abrir
     const {onOpen, visible, onClose} = useModalState()
     //data dummy
-    const [dataSource] = useState([
+    const [dataSource, setDataSource] = useState([
         {
             id: 1,
+            key: 1,
             nombre: "Mario Ortega",
             edad: 24,
             correo: "mortega@outlook.com",
@@ -21,6 +22,7 @@ export const TableCrud  =({}) => {
         },
         {
             id: 2,
+            key: 2,
             nombre: "Mario Ortega",
             edad: 24,
             correo: "mortega@outlook.com",
@@ -28,6 +30,15 @@ export const TableCrud  =({}) => {
         },
         {
             id: 3,
+            key: 3,
+            nombre: "Mario Ortega",
+            edad: 24,
+            correo: "mortega@outlook.com",
+            direccion: "alameda 1"
+        },
+        {
+            id: 4,
+            key: 4,
             nombre: "Mario Ortega",
             edad: 24,
             correo: "mortega@outlook.com",
@@ -36,7 +47,13 @@ export const TableCrud  =({}) => {
     ]);
     //!agregar persona
     
-    //uso de data dummy
+    //!eliminar persona
+    const onDeletePersona=(record)=>{
+        console.log(record);
+        setDataSource(dataSource.filter(item => record.id !== item.id));
+    }
+    //!editar persona
+    //!uso de data dummy en tabla
     const columns = [
         {
             key: "1",
@@ -68,39 +85,23 @@ export const TableCrud  =({}) => {
             key: '6',
             title: 'Acciones',
             dataIndex: 'acciones',
+            //!es neceasrio usar el guion bajo es una variable anonima 
+            render: (_, record) => <>
+            <Button id="btn-editar" type="primary" onClick= {() => {
+                console.log('wenas')
+                onOpen()}}>Editar</Button> 
+                
+                {"    "}
             
-            render: () => <>
-            <Button 
-                id="btn-editar" 
-                type="primary" 
-                onClick= {() => {
-                //console.log('wenas')
-                onOpen()}}>Editar</Button> {"    "}
-            {/* componente para visualizacion de confirmacion */}
-            <Popconfirm
-                title="Desea realizar esta acción?"
-                onConfirm={confirm}
-                onCancel={cancel}
-                okText="SI"
-                cancelText="NO"
-            >
-                <Button id="btn-eliminar" type="primary" danger>Eliminar</Button> 
-            </Popconfirm>
+            <Button id="btn-eliminar" type="primary" danger onClick={()=>{
+                        onDeletePersona(record)
+                    }}>Eliminar</Button> 
+            
             </>
             
           },
     ]
-    
-    /* mensaje emergente  de accion */
-    const confirm = (e) => {
-        console.log(e);
-        message.success('Elemento eliminado');
-      };
-      const cancel = (e) => {
-        console.log(e);
-        message.error('Cancelado');
-      };
-    
+      
     return(
         <>
         <br />
@@ -139,7 +140,7 @@ export const TableCrud  =({}) => {
                     },
                     ]}
                 >
-                    <Input></Input>
+                    <Input name="nombre"></Input>
                 </Form.Item>
 
                 <Form.Item
@@ -152,7 +153,7 @@ export const TableCrud  =({}) => {
                     },
                     ]}
                 >
-                    <Input></Input>
+                    <Input name="edad"></Input>
                 </Form.Item>
 
                 <Form.Item
@@ -165,7 +166,7 @@ export const TableCrud  =({}) => {
                     },
                     ]}
                 >
-                    <Input></Input>
+                    <Input name="correo"></Input>
                 </Form.Item>
 
                 <Form.Item
@@ -178,7 +179,7 @@ export const TableCrud  =({}) => {
                     },
                     ]}
                 >
-                    <Input></Input>
+                    <Input name="direccion"></Input>
                 </Form.Item>
             </Form>
 
