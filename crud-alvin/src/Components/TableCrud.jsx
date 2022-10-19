@@ -46,13 +46,48 @@ export const TableCrud  =({}) => {
         },
     ]);
     //!agregar persona
-    
+    //!editar persona
+    //!captura de datos de inputs
+    const [personaSeleccionada, setPersonaSeleccionada] = useState(null);
+
+    const seleccionarPersona = (dataSource)=>{
+        setPersonaSeleccionada(dataSource);
+        onOpen(true);
+    }
+    //!captura de datos escritos en inputs para editar
+    const handleChange=e=>{
+        const {name, value} = e.target;
+        setPersonaSeleccionada((estado)=>({
+            ...estado,
+            [name]: value 
+        }));
+        console.log(personaSeleccionada);
+    }
+
+    //!editar persona
+    const editar=()=>{
+        //data nueva variable auxiliar
+        //recorrerla para modificar
+        const dataNueva = dataSource.map(dataSource=>{
+            if(dataSource.id === personaSeleccionada.id){
+                dataSource.nombre = personaSeleccionada.nombre;
+                dataSource.edad = personaSeleccionada.edad;
+                dataSource.correo = personaSeleccionada.correo;
+                dataSource.direccion = personaSeleccionada.direccion;
+            }
+
+            return dataSource;
+        });
+        setDataSource(dataNueva);
+
+        onClose(true);
+    }
     //!eliminar persona
     const onDeletePersona=(record)=>{
         console.log(record);
         setDataSource(dataSource.filter(item => record.id !== item.id));
     }
-    //!editar persona
+   
     //!uso de data dummy en tabla
     const columns = [
         {
@@ -88,11 +123,9 @@ export const TableCrud  =({}) => {
             //!es neceasrio usar el guion bajo es una variable anonima 
             render: (_, record) => <>
             <Button id="btn-editar" type="primary" onClick= {() => {
-                console.log('wenas')
-                onOpen()}}>Editar</Button> 
-                
-                {"    "}
-            
+                //console.log(record)
+                seleccionarPersona(record)}}>Editar</Button>
+                {" "}
             <Button id="btn-eliminar" type="primary" danger onClick={()=>{
                         onDeletePersona(record)
                     }}>Eliminar</Button> 
@@ -109,7 +142,7 @@ export const TableCrud  =({}) => {
         <br />
         <Button 
             onClick= {() => {
-                //console.log('wenas')
+                seleccionarPersona(null)
                 onOpen()}}
             id="btn-agregar"
             type="primary"
@@ -120,16 +153,22 @@ export const TableCrud  =({}) => {
         Agregar
       </Button>
         <Modal
+        key = {`${visible}`}
         //elementos del modal
         title = "Registro de Personal" 
         open={visible} 
         onCancel={() => onClose()}
         footer={[
-            <Button type="primary" danger onClick={onClose}>Cacelar</Button>,
-            <Button type="primary">Enviar</Button>
+            <Button type="primary" danger onClick={onClose} key='cancelButton'>Cacelar</Button>,
+            <Button type="primary" key='sendButton' onClick={()=>editar()}>Enviar</Button>
         ]}>
             <br/>
-            <Form labelCol={{span:4}}>
+            <Form labelCol={{span:4}} initialValues={!!personaSeleccionada ? {
+                "nombre-form": personaSeleccionada.nombre,
+                "edad-form": personaSeleccionada.edad,
+                "correo-form": personaSeleccionada.correo,
+                "direccion-form": personaSeleccionada.direccion
+            } : {}}>
                 <Form.Item
                     label="Nombre"
                     name="nombre-form"
@@ -140,7 +179,7 @@ export const TableCrud  =({}) => {
                     },
                     ]}
                 >
-                    <Input name="nombre"></Input>
+                    <Input name="nombre" onChange={handleChange}></Input>
                 </Form.Item>
 
                 <Form.Item
@@ -153,7 +192,7 @@ export const TableCrud  =({}) => {
                     },
                     ]}
                 >
-                    <Input name="edad"></Input>
+                    <Input name="edad" onChange={handleChange}></Input>
                 </Form.Item>
 
                 <Form.Item
@@ -166,7 +205,7 @@ export const TableCrud  =({}) => {
                     },
                     ]}
                 >
-                    <Input name="correo"></Input>
+                    <Input name="correo" onChange={handleChange}></Input>
                 </Form.Item>
 
                 <Form.Item
@@ -179,13 +218,13 @@ export const TableCrud  =({}) => {
                     },
                     ]}
                 >
-                    <Input name="direccion"></Input>
+                    <Input name="direccion" onChange={handleChange}></Input>
                 </Form.Item>
             </Form>
 
         </Modal> 
         <br />
-           <Table columns={columns} dataSource={dataSource}></Table>
+           <Table columns={columns} dataSource={dataSource} />
         </>
     );
 }
