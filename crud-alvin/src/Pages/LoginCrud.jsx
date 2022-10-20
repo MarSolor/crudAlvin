@@ -1,6 +1,6 @@
 import { Button, Checkbox, Form, Input } from 'antd';
 import React from 'react';
-const App = () => {
+export const Login = () => {
     const onFinish = (values) => {
       console.log('Success:', values);
     };
@@ -73,4 +73,3 @@ const App = () => {
       </Form>
     );
   };
-  export default App;

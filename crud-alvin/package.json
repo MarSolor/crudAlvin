@@ -4,19 +4,35 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "json-server --watch db.json --port 3001",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "antd": "^4.23.5",
+    "json-server": "^0.17.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.1.0",
     "vite": "^3.1.0"
-  }
+  },
+  "main": "vite.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarSolor/crudAlvin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarSolor/crudAlvin/issues"
+  },
+  "homepage": "https://github.com/MarSolor/crudAlvin#readme",
+  "description": ""
 }

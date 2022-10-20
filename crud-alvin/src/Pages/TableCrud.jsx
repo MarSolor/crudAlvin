@@ -2,7 +2,7 @@ import { Button, Table } from 'antd';
 import React from 'react';
 import 'antd/dist/antd.css';
 import {  Form, Input } from 'antd';
-import {useModalState} from './ModalCrud'
+import {useModalState} from '../Components/ModalCrud'
 
 import Modal from 'antd/lib/modal'
 import { useState } from 'react';

@@ -1,0 +1,14 @@
+{
+    "usuarios":[
+        {
+            "id": 1,
+            "correo": "mortega@mario.com",
+            "password": "mario123"        
+        },
+        {
+            "id": 2,
+            "correo": "alvin@baltodano.com",
+            "password": "baltodano123"     
+        }
+    ]
+}
