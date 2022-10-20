@@ -11,8 +11,9 @@ export const TableCrud  =({}) => {
     //se usan las funciones de ModalCrud y variable //!visible
     //!abrir
     const {onOpen, visible, onClose} = useModalState()
-    //!tabla formulario actualizar
     
+    //! para que se  pueda usar el boton de enviar para agregar  y editar
+    const [state, setState] = useState(null)
     //data dummy
     const [dataSource, setDataSource] = useState([
         {
@@ -49,7 +50,16 @@ export const TableCrud  =({}) => {
         },
     ]);
     //!agregar persona
-    //!editar persona
+    const agregar =()=>{
+        const datoAgregar=personaSeleccionada;
+        datoAgregar.id= dataSource[dataSource.length-1].id+1;
+        let dataNueva = dataSource;
+        dataNueva.push(datoAgregar);
+        setDataSource(dataNueva);
+
+        onClose();
+        
+    }
     //!captura de datos de inputs
     const [personaSeleccionada, setPersonaSeleccionada] = useState(null);
 
@@ -66,7 +76,6 @@ export const TableCrud  =({}) => {
         }));
         console.log(personaSeleccionada);
     }
-
     //!editar persona
     const editar=()=>{
         //data nueva variable auxiliar
@@ -86,6 +95,7 @@ export const TableCrud  =({}) => {
         console.log(record);
         setDataSource(dataSource.filter(item => record.id !== item.id));
     }
+    
    
     //!uso de data dummy en tabla
     const columns = [
@@ -123,6 +133,8 @@ export const TableCrud  =({}) => {
             render: (_, record) => <>
             <Button id="btn-editar" type="primary" onClick= {() => {
                 //console.log(record)
+                //!se setea el estado de editar al boton que abre el modal
+                setState("editar");
                 seleccionarPersona(record)}}>Editar</Button>
                 {" "}
             <Button id="btn-eliminar" type="primary" danger onClick={()=>{
@@ -141,6 +153,8 @@ export const TableCrud  =({}) => {
         <br />
         <Button 
             onClick= {() => {
+                //!se setea el estado de agregar al boton que abre el modal parara agregae
+                setState("agregar")
                 seleccionarPersona(null)
                 onOpen()}}
             id="btn-agregar"
@@ -160,7 +174,11 @@ export const TableCrud  =({}) => {
         onCancel={() => onClose(true)}
         footer={[
             <Button type="primary" danger onClick={onClose} key='cancelButton'>Cacelar</Button>,
-            <Button type="primary" key='sendButton' onClick={()=>editar()}>Enviar</Button>
+            <Button type="primary" key='sendButton' onClick={()=>{
+                //! los estados se usan en funcion de la accion
+                if(state === 'editar') editar();
+                if(state === 'agregar') agregar();
+            }} >Enviar</Button>
         ]}>
             <br/>
             <Form labelCol={{span:4}} initialValues={!!personaSeleccionada ? {
