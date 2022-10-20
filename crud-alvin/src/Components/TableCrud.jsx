@@ -3,6 +3,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import {  Form, Input } from 'antd';
 import {useModalState} from './ModalCrud'
+
 import Modal from 'antd/lib/modal'
 import { useState } from 'react';
 
@@ -10,6 +11,8 @@ export const TableCrud  =({}) => {
     //se usan las funciones de ModalCrud y variable //!visible
     //!abrir
     const {onOpen, visible, onClose} = useModalState()
+    //!tabla formulario actualizar
+    
     //data dummy
     const [dataSource, setDataSource] = useState([
         {
@@ -70,17 +73,13 @@ export const TableCrud  =({}) => {
         //recorrerla para modificar
         const dataNueva = dataSource.map(dataSource=>{
             if(dataSource.id === personaSeleccionada.id){
-                dataSource.nombre = personaSeleccionada.nombre;
-                dataSource.edad = personaSeleccionada.edad;
-                dataSource.correo = personaSeleccionada.correo;
-                dataSource.direccion = personaSeleccionada.direccion;
+                return personaSeleccionada;
             }
 
             return dataSource;
         });
         setDataSource(dataNueva);
-
-        onClose(true);
+        onClose();
     }
     //!eliminar persona
     const onDeletePersona=(record)=>{
@@ -153,11 +152,12 @@ export const TableCrud  =({}) => {
         Agregar
       </Button>
         <Modal
+        //!key dinamica
         key = {`${visible}`}
         //elementos del modal
         title = "Registro de Personal" 
         open={visible} 
-        onCancel={() => onClose()}
+        onCancel={() => onClose(true)}
         footer={[
             <Button type="primary" danger onClick={onClose} key='cancelButton'>Cacelar</Button>,
             <Button type="primary" key='sendButton' onClick={()=>editar()}>Enviar</Button>
@@ -224,7 +224,7 @@ export const TableCrud  =({}) => {
 
         </Modal> 
         <br />
-           <Table columns={columns} dataSource={dataSource} />
+           <Table columns={columns} dataSource={dataSource} key={`${dataSource}`} />
         </>
     );
 }
