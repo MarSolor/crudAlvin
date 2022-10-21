@@ -84,7 +84,7 @@ export const TableCrud  =({}) => {
             if(dataSource.id === personaSeleccionada.id){
                 return personaSeleccionada;
             }
-
+            //en vez de estar llamando a cada uno mejor retornar dataSource para sobreescribir
             return dataSource;
         });
         setDataSource(dataNueva);
