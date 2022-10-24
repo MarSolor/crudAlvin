@@ -1,33 +1,61 @@
-import { Button, Checkbox, Form, Input } from 'antd';
-import React from 'react';
-import { useState } from 'react';
+import { Button, Checkbox, Form, Input } from "antd";
+import React from "react";
+import { useState } from "react";
+import axios from "axios";
 
-//TODO corregir lo de captura de datos, state y onchange
-//TODO quede en minuto 12 de 27 de fake api
-//TODO volver a ver video del crud de borja
+const baseUrl = "http://localhost:3001/usuarios";
 
 export const Login = () => {
-  const onFinish = (values) => {
-    console.log('Success:', values);
+  const onFinish = (successUser) => {
+    console.log(successUser);
   };
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
   //!caputura de datos
   const [campoSeleccionado, setCampoSeleccionado] = useState(null);
-  
-
   //!estados de los campos del formulario vacio
-  const handleChange= e=>{
-    const {name, value}=e.target;
-    setCampoSeleccionado((estado)=>({
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCampoSeleccionado((estado) => ({
       ...estado,
-      [name]:value
-    }))
+      [name]: value,
+    }));
     console.log(campoSeleccionado);
-  }
-  return (
+  };
+
+  //!metodo  para peticion http y peticion
+  const iniciarSesion = async () => {
+    //!promesa para conexion a api 
+    const user = await axios.get(baseUrl, {
+      params: {
+        //!es requerida variable de del hook para capturar el valor ingresado 
+        //!con camposeleccionad para ingresar al objeto en el atributo username y password
+        username: campoSeleccionado.username,
+        password: campoSeleccionado.password,
+      },
+    });
+    //user.data captura la informacion perteneciente al objeto de tipo json
+    console.log("user :>> ", user.data);
+
+    const [successUser] = user.data
+
+    //! revisar
+    if (successUser) {
+      // significa que inicio bien la session
+      
+      alert('inicio de sesion correcto')
+      window.location.href="TableCrud";
+    } else {
+      // usuario y contraena no encontrado
+      alert('inicio de sesion incorrecto ')
+
+    }
+
     
+  };
+
+  return (
     <Form
       name="form-login"
       labelCol={{
@@ -60,25 +88,25 @@ export const Login = () => {
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: "Please input your username!",
           },
         ]}
       >
-        <Input name="username"/>
+        <Input name="username" />
       </Form.Item>
 
       <Form.Item
         label="Password"
         name="password"
-        onChange={handleChange} 
+        onChange={handleChange}
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
+            message: "Please input your password!",
           },
         ]}
       >
-        <Input.Password name="password"/>
+        <Input.Password name="password" />
       </Form.Item>
 
       <Form.Item
@@ -89,7 +117,7 @@ export const Login = () => {
           span: 16,
         }}
       >
-        <Checkbox>Remember me</Checkbox>
+        <Checkbox>Recuerdame</Checkbox>
       </Form.Item>
 
       <Form.Item
@@ -98,8 +126,9 @@ export const Login = () => {
           span: 16,
         }}
       >
-        <Button type="primary" htmlType="submit">
-          Submit
+        {/* se valida con el onclick iniciar sesion a los datos que se comparan con la api */}
+        <Button type="primary" htmlType="submit" onClick={iniciarSesion}>
+          Enviar
         </Button>
       </Form.Item>
     </Form>

@@ -9,7 +9,7 @@ export const Rutas = () => {
     return(
         <Routes>
             <Route path="/" element={<Login/>}></Route>
-            <Route path="TableCrud" element={<TableCrud/>}></Route>
+            <Route path="/TableCrud" element={<TableCrud/>}></Route>
         </Routes>
     );
   }

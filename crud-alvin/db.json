@@ -3,12 +3,14 @@
         {
             "id": 1,
             "username": "mortega@mario.com",
-            "password": "mario123"        
+            "password": "mario123",
+            "nombre": "Mario"        
         },
         {
             "id": 2,
             "username": "alvin@baltodano.com",
-            "password": "baltodano123"     
+            "password": "baltodano123" ,
+            "nombre": "Alvin"    
         }
     ]
 }
